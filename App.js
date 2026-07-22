@@ -1,9 +1,18 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Image, FlatList, Pressable } from 'react-native';
+import { useState } from 'react';
 import { colors } from './src/theme';
 import { Hero } from './src/data';
 
 export default function App() {
+  const [likeID, setLikeID] = useState([])
+
+  const toggleLike = (id) => {
+    setLikeID((prev) =>
+      prev.includes(id) ? prev.filter((st) => st !== id) : [...prev, id]
+    )
+  }
+
   return (
     <View style={styles.container}>
 
@@ -11,18 +20,28 @@ export default function App() {
         data={Hero}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.list}
+        numColumns={2}
+        columnWrapperStyle={styles.row}
         renderItem={({ item }) => (
+
           <View style={styles.card}>
             <Image
               style={styles.image}
               source={{ uri: item.uri }}
             />
 
+
             <View style={styles.footer}>
               <Text style={styles.title}>
                 {item.name}
               </Text>
+              <Pressable onPress={() => toggleLike(item.id)}>
+                <Text style={[styles.heart, likeID.includes(item.id) && styles.heartON]}>
+                  {'\u2665\uFE0E'}
+                </Text>
+              </Pressable>
             </View>
+
           </View>
         )}
       />
@@ -39,7 +58,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  list: { padding: 14 },
+  list: { marginTop: 30, padding: 14 },
   row: { justifyContent: 'space-between' },
   card: {
     width: '48%',
