@@ -1,15 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image, FlatList, Pressable } from 'react-native';
+import { StyleSheet, Text, View, Image, FlatList, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import { colors } from './src/theme';
 import { Hero } from './src/data';
 
 export default function App() {
-  const [likeID, setLikeID] = useState([])
+  const [Fav, setFav] = useState([])
 
   const toggleLike = (id) => {
-    setLikeID((prev) =>
-      prev.includes(id) ? prev.filter((st) => st !== id) : [...prev, id]
+    setFav((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
     )
   }
 
@@ -22,28 +22,28 @@ export default function App() {
         contentContainerStyle={styles.list}
         numColumns={2}
         columnWrapperStyle={styles.row}
-        renderItem={({ item }) => (
+        renderItem={({ item }) => {
+          const isFav = Fav.includes(item.id)
 
-          <View style={styles.card}>
-            <Image
-              style={styles.image}
-              source={{ uri: item.uri }}
-            />
-
-
-            <View style={styles.footer}>
-              <Text style={styles.title}>
-                {item.name}
-              </Text>
-              <Pressable onPress={() => toggleLike(item.id)}>
-                <Text style={[styles.heart, likeID.includes(item.id) && styles.heartON]}>
-                  {'\u2665\uFE0E'}
+          return (
+            <View style={styles.card}>
+              <Image
+                style={styles.image}
+                source={{ uri: item.uri }}
+              />
+              <View style={styles.footer}>
+                <Text style={styles.title}>
+                  {item.name}
                 </Text>
-              </Pressable>
+                <TouchableOpacity onPress={() => toggleLike(item.id)}>
+                  <Text style={[styles.heart, isFav && styles.heartON]}>
+                    {'\u2665'}
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
-
-          </View>
-        )}
+          )
+        }}
       />
 
       <StatusBar style="auto" />
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  list: { marginTop: 30, padding: 14 },
+  list: { marginTop: 60, padding: 10 },
   row: { justifyContent: 'space-between' },
   card: {
     width: '48%',
@@ -83,6 +83,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginRight: 8,
   },
-  heart: { fontSize: 24, color: colors.muted, },
-  heartON: { color: colors.heart }
+  heart: { fontSize: 30, color: colors.muted, opacity: 0.35 },
+  heartON: { color: colors.heart, opacity: 1 }
 });
