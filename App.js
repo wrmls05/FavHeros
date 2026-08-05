@@ -1,8 +1,8 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image, FlatList, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
-import { colors } from './src/theme';
-import { Hero } from './src/data';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
+import AllHeros from './src/screen/AllHeros';
+import { colors, TOP_INSET } from './src/theme';
 
 export default function App() {
   const [Fav, setFav] = useState([])
@@ -12,77 +12,64 @@ export default function App() {
       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
     )
   }
-
   return (
-    <View style={styles.container}>
-
-      <FlatList
-        data={Hero}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.list}
-        numColumns={2}
-        columnWrapperStyle={styles.row}
-        renderItem={({ item }) => {
-          const isFav = Fav.includes(item.id)
-
-          return (
-            <View style={styles.card}>
-              <Image
-                style={styles.image}
-                source={{ uri: item.uri }}
-              />
-              <View style={styles.footer}>
-                <Text style={styles.title}>
-                  {item.name}
-                </Text>
-                <TouchableOpacity onPress={() => toggleLike(item.id)}>
-                  <Text style={[styles.heart, isFav && styles.heartON]}>
-                    {'\u2665'}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          )
-        }}
-      />
-
-      <StatusBar style="auto" />
+    <View style={styles.root}>
+      <ExpoStatusBar style="light" />
+      <View style={[styles.header, { paddingTop: 10 + TOP_INSET }]}>
+        <Text style={styles.title}>แกลเลอรี่</Text>
+      </View>
+      <View style={styles.body}>
+        <AllHeros onToggleLike={toggleLike} Fav={Fav} />
+      </View>
+      <View style={styles.tabbar}>
+        <Tabbutton label='AllHeros'/>
+        <Tabbutton label={'MyHeros (' + Fav.length + ')'} />
+      </View>
     </View>
-  );
+  )
+}
+
+const Tabbutton = ({ label }) => {
+  return (
+    <TouchableOpacity style={styles.tab}>
+      <Text style={styles.tabText}>{label}</Text>
+    </TouchableOpacity>
+  )
 }
 
 const styles = StyleSheet.create({
-  container: {
+  root: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: colors.bg,
   },
-  list: { marginTop: 60, padding: 10 },
-  row: { justifyContent: 'space-between' },
-  card: {
-    width: '48%',
-    marginBottom: 14,
-    backgroundColor: colors.surface,
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: 12,
-    overflow: 'hidden',
-  },
-  image: { width: '100%', aspectRatio: 1, },
-  footer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 14,
-    paddingHorizontal: 8,
+  header: {
+    paddingHorizontal: 16, paddingVertical: 14, borderBottomWidth: 1, borderBottomColor: colors.border, backgroundColor: colors.surface,
   },
   title: {
-    flex: 1,
-    color: colors.text,
-    fontSize: 18,
-    marginRight: 8,
+    color: colors.cyan, fontSize: 22, fontWeight: '700',
   },
-  heart: { fontSize: 30, color: colors.muted, opacity: 0.35 },
-  heartON: { color: colors.heart, opacity: 1 }
-});
+  body: {
+    flex: 1,
+  },
+  tabbar: {
+    flexDirection: 'row',
+    borderTopWidth: 1,
+    borderTopColor: colors.border,
+    backgroundColor: colors.surface,
+  },
+  tab: {
+    flex: 1,
+    paddingVertical: 14,
+    alignItems: 'center',
+  },
+  tabText: {
+    color: colors.muted,
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  tabActive: {
+    paddingBottom: 12,
+    borderBottomWidth: 2,
+    borderBottomColor: colors.cyan,
+  }
+})
