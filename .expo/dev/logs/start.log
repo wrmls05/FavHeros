@@ -129,3 +129,9 @@
 {"_e":"metro:bundling:progress","_t":1785913491564,"id":"n","progress":0,"total":1,"current":0}
 {"_e":"metro:bundling:progress","_t":1785913491666,"id":"n","progress":0,"total":1,"current":0}
 {"_e":"metro:bundling:failed","_t":1785913491709,"id":"n","message":"SyntaxError: D:\\mob800\\FavHeros\\src\\components\\HeroCard.js: Identifier 'styles' has already been declared. (25:6)\n\n  23 |     )\n  24 | }\n> 25 | const styles = StyleSheet.create({\n     |       ^\n  26 |     card: {\n  27 |         width: '48%',\n  28 |         marginBottom: 14,","importStack":null,"filename":"src\\components\\HeroCard.js","targetModuleName":null,"originModulePath":null}
+{"_e":"metro:bundling:started","_t":1785913721153,"id":"o","platform":"android","environment":null,"entry":"index.js"}
+{"_e":"metro:bundling:progress","_t":1785913721153,"id":"o","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:progress","_t":1785913721154,"id":"o","progress":0,"total":1,"current":0}
+{"_e":"metro:bundling:done","_t":1785913721319,"id":"o","total":1,"ms":165.7038}
+{"_e":"metro:client_log","_t":1785914734900,"level":"error","data":["[ReferenceError: Property 'Tabbutton' doesn't exist]"]}
+{"_e":"metro:client_log","_t":1785914804093,"level":"error","data":["[ReferenceError: Property 'TabbuttonAllHeros' doesn't exist]"]}
