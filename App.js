@@ -3,8 +3,11 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import AllHeros from './src/screen/AllHeros';
 import { colors, TOP_INSET } from './src/theme';
+import FavHeros from './src/screen/FavHeros';
 
 export default function App() {
+  const [tab, setTab] = useState('AllHeros')
+
   const [Fav, setFav] = useState([])
 
   const toggleLike = (id) => {
@@ -16,23 +19,30 @@ export default function App() {
     <View style={styles.root}>
       <ExpoStatusBar style="light" />
       <View style={[styles.header, { paddingTop: 10 + TOP_INSET }]}>
-        <Text style={styles.title}>แกลเลอรี่</Text>
+        <Text style={styles.title}>{tab === 'AllHeros' ? 'All Heros' : 'Fav Heros'}</Text>
       </View>
       <View style={styles.body}>
-        <AllHeros onToggleLike={toggleLike} Fav={Fav} />
+        {
+          tab === 'AllHeros' ?
+            <AllHeros onToggleLike={toggleLike} Fav={Fav} />
+            :
+            <FavHeros onToggleLike={toggleLike} Fav={Fav} />
+        }
       </View>
       <View style={styles.tabbar}>
-        <Tabbutton label='AllHeros'/>
-        <Tabbutton label={'MyHeros (' + Fav.length + ')'} />
+        <Tabbutton label='All Heros' onPress={() => setTab('AllHeros')}
+          active={tab === 'AllHeros'} />
+        <Tabbutton label={'My Heros (' + Fav.length + ')'} onPress={() => setTab('FavHeros')}
+          active={tab === 'FavHeros'} />
       </View>
     </View>
   )
 }
 
-const Tabbutton = ({ label }) => {
+const Tabbutton = ({ label, onPress, active }) => {
   return (
-    <TouchableOpacity style={styles.tab}>
-      <Text style={styles.tabText}>{label}</Text>
+    <TouchableOpacity style={styles.tab} onPress={onPress}>
+      <Text style={[styles.tabText, active && styles.tabActive]}>{label}</Text>
     </TouchableOpacity>
   )
 }
@@ -71,5 +81,6 @@ const styles = StyleSheet.create({
     paddingBottom: 12,
     borderBottomWidth: 2,
     borderBottomColor: colors.cyan,
+    color: colors.cyan,
   }
 })

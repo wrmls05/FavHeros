@@ -1,9 +1,9 @@
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { colors } from '../theme';
 
-const HeroCard = ({ Hero, isFav, onToggleLike }) => {
+const HeroCard = ({ Hero, isFav, onToggleLike, fullWidth }) => {
     return (
-        <View style={styles.card}>
+        <View style={[styles.card, fullWidth && styles.cardFull]}>
             <Image
                 style={styles.image}
                 source={{ uri: Hero.uri }}
@@ -46,7 +46,10 @@ const styles = StyleSheet.create({
         marginRight: 8,
     },
     heart: { fontSize: 30, color: colors.muted, opacity: 0.35 },
-    heartON: { color: colors.heart, opacity: 1 }
+    heartON: { color: colors.heart, opacity: 1 },
+    cardFull: {
+        width: '100%',
+    }
 })
 
 export default HeroCard
